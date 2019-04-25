@@ -47,6 +47,19 @@ func main() {
 		return
 	}
 
+	b.Handle("/start", func(m *tb.Message) {
+		log.Println(m.Sender.Username + ": " + m.Text)
+
+		_, err := b.Send(m.Chat, `Available Commands:
+
+- _/hello_: simply greets the user (anyone can run it)
+- /getss: takes screenshots of the pc and sends it to the user (only admin can run it)
+- /sh <valid-shell-command>: runs the command where the bot is running and sends any output returned by the command or error (only admin can run it)`)
+		if err != nil {
+			log.Fatal(err)
+		}
+	})
+
 	b.Handle("/hello", func(m *tb.Message) {
 		log.Println("Hi, " + m.Sender.FirstName + " " + m.Sender.LastName + "!")
 		_, err := b.Send(m.Chat, "Hi, "+m.Sender.FirstName+" "+m.Sender.LastName+"!")
