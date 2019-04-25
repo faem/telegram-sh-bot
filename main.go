@@ -50,11 +50,14 @@ func main() {
 	b.Handle("/start", func(m *tb.Message) {
 		log.Println(m.Sender.Username + ": " + m.Text)
 
-		_, err := b.Send(m.Chat, `Available Commands:
+		_, err := b.Send(m.Chat, `***Available Commands***:
 
-- _/hello_: simply greets the user (anyone can run it)
-- /getss: takes screenshots of the pc and sends it to the user (only admin can run it)
-- /sh <valid-shell-command>: runs the command where the bot is running and sends any output returned by the command or error (only admin can run it)`)
+- ***/hello***: simply greets the user (anyone can run it)
+- ***/getss***: takes screenshots of the pc and sends it to the user (only admin can run it)
+- ***/sh <valid-shell-command>***: runs the command where the bot is running and sends any output returned by the command or error (only admin can run it)`,
+			&tb.SendOptions{
+				ParseMode: "Markdown",
+			})
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -72,7 +75,7 @@ func main() {
 		log.Println(m.Sender.Username + ": " + m.Text)
 
 		if !isAdmin(m.Sender.Username) {
-			_, err := b.Send(m.Chat, "Only "+admin+" is authorized to run /sh command! You can run /hello 	\xF0\x9F\x98\x82")
+			_, err := b.Send(m.Chat, "Only `"+admin+"` is authorized to run /sh command! You can run /hello 	\xF0\x9F\x98\x82", &tb.SendOptions{ParseMode: "Markdown"})
 			if err != nil {
 				log.Println(err)
 			}
@@ -105,7 +108,7 @@ func main() {
 			}
 			return
 		}
-		_, err = b.Send(m.Chat, ""+string(resp))
+		_, err = b.Send(m.Chat, "```\n"+string(resp)+"```", &tb.SendOptions{ParseMode: "Markdown"})
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -114,7 +117,7 @@ func main() {
 	b.Handle("/getss", func(m *tb.Message) {
 		log.Println(m.Sender.Username + ": " + m.Text)
 		if !isAdmin(m.Sender.Username) {
-			_, err := b.Send(m.Chat, "Only "+admin+" is authorized to run /getss command! You can run /hello 	\xF0\x9F\x98\x82")
+			_, err := b.Send(m.Chat, "Only `"+admin+"` is authorized to run /getss command! You can run /hello 	\xF0\x9F\x98\x82", &tb.SendOptions{ParseMode: "Markdown"})
 			if err != nil {
 				log.Println(err)
 			}
