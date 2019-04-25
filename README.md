@@ -25,7 +25,7 @@ Run shell command & take screenshots of your PC using this bot.
 
 - `/hello`: simply greets the user (anyone can run it)
 - `/getss`: takes screenshots of the pc and sends it to the user (only admin can run it)
-- `/sh <valid-shell-command>`: runs the command where the bot is running and sends any output returned by the command or error
+- `/sh <valid-shell-command>`: runs the command where the bot is running and sends any output returned by the command or error (only admin can run it)
  
  ## Bot ScreenShots
 Hello (`/hello`)              |      Get Screenshots (`/getss`)                |        Shell Command (`/sh`) 
