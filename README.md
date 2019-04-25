@@ -28,7 +28,6 @@ Run shell command & take screenshots of your PC using this bot.
 - `/sh <valid-shell-command>`: runs the command where the bot is running and sends any output returned by the command or error
  
  ## Bot ScreenShots
- ### Screenshots:
 Hello (`/hello`)              |      Get Screenshots (`/getss`)                |        Shell Command (`/sh`) 
 :-------------------------:|:-------------------------:|:-------------------------:
 ![img](https://i.ibb.co/Wn6Rm4G/ss2.jpg) | ![img](https://i.ibb.co/C2JWdfr/ss1.jpg) | ![img](https://i.ibb.co/g4BMSSF/ss3.jpg) 
