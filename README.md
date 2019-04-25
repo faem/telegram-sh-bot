@@ -3,8 +3,10 @@
 Run shell command & take screenshots of your PC using this bot.
 
 ## How to Run
-- `go build`
-- `./tbot --token <bot-api-token> --admin <telegram-username-of-admin>`
+- First create a Telegram bot using [BotFather]
+- Then run `go get github.com/faem/telegram-sh-bot`
+- Finally, `telegram-sh-bot --token <bot-api-token> --admin <telegram-username-of-admin>`
+- Enjoy!
 
 ## Run from Docker
 - `docker run fahimabrar/bot --token <bot-api-token> --admin <telegram-username-of-admin>`
@@ -31,3 +33,5 @@ Run shell command & take screenshots of your PC using this bot.
 Hello (`/hello`)              |      Get Screenshots (`/getss`)                |        Shell (`/sh cat Dockerfile`) 
 :-------------------------:|:-------------------------:|:-------------------------:
 ![img](https://i.ibb.co/Wn6Rm4G/ss2.jpg) | ![img](https://i.ibb.co/g4BMSSF/ss3.jpg) | ![img](https://i.ibb.co/C2JWdfr/ss1.jpg) 
+
+[BotFather]: https://core.telegram.org/bots#6-botfather
