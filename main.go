@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	admin      string
+	admins     []string
 	token      string
 	pollTime   int64
 	debug      bool
@@ -23,12 +23,20 @@ var (
 )
 
 func init() {
-	flag.StringVar(&admin, "admin", "fahim_abrar", "Username of the admin")
+	var tmp string
+	flag.StringVar(&tmp, "admin", "fahim_abrar,Cauef", "Comma separated usernames of the admins")
 	flag.StringVar(&token, "token", os.Getenv("TELEGRAM_BOT_TOKEN"), "Token of your bot")
 	flag.Int64Var(&pollTime, "poll_time", 100, "Response time of bot")
 	flag.BoolVar(&debug, "debug", false, "Print error info to debug")
 
 	flag.Parse()
+	for _, v := range strings.Split(tmp, ",") {
+		admins = append(admins, v)
+	}
+	// fmt.Printf("%+v\n", admins)
+	if len(os.Args) < 2 {
+		flag.Usage()
+	}
 }
 
 func main() {
@@ -75,7 +83,7 @@ func main() {
 		log.Println(m.Sender.Username + ": " + m.Text)
 
 		if !isAdmin(m.Sender.Username) {
-			_, err := b.Send(m.Chat, "Only `"+admin+"` is authorized to run /sh command! You can run /hello 	\xF0\x9F\x98\x82", &tb.SendOptions{ParseMode: "Markdown"})
+			_, err := b.Send(m.Chat, "Only `"+fmt.Sprintf("%v", admins)+"` are authorized to run /sh command! You can run /hello", &tb.SendOptions{ParseMode: "Markdown"})
 			if err != nil {
 				log.Println(err)
 			}
@@ -117,7 +125,7 @@ func main() {
 	b.Handle("/getss", func(m *tb.Message) {
 		log.Println(m.Sender.Username + ": " + m.Text)
 		if !isAdmin(m.Sender.Username) {
-			_, err := b.Send(m.Chat, "Only `"+admin+"` is authorized to run /getss command! You can run /hello 	\xF0\x9F\x98\x82", &tb.SendOptions{ParseMode: "Markdown"})
+			_, err := b.Send(m.Chat, "Only `"+fmt.Sprintf("%v", admins)+"` are authorized to run /getss command! You can run /hello 	\xF0\x9F\x98\x82", &tb.SendOptions{ParseMode: "Markdown"})
 			if err != nil {
 				log.Println(err)
 			}
@@ -173,8 +181,10 @@ func GetScreenShots() ([]string, error) {
 }
 
 func isAdmin(username string) bool {
-	if username == admin {
-		return true
+	for _, v := range admins {
+		if username == v {
+			return true
+		}
 	}
 
 	return false
