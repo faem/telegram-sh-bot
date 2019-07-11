@@ -1,4 +1,4 @@
-module tbot
+module github.com/faem/telegram-sh-bot
 
 go 1.12
 
