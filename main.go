@@ -24,22 +24,24 @@ var (
 
 func init() {
 	var tmp string
+
 	flag.StringVar(&tmp, "admin", "fahim_abrar,Cauef", "Comma separated usernames of the admins")
 	flag.StringVar(&token, "token", os.Getenv("TELEGRAM_BOT_TOKEN"), "Token of your bot")
 	flag.Int64Var(&pollTime, "poll_time", 100, "Response time of bot")
 	flag.BoolVar(&debug, "debug", false, "Print error info to debug")
-
 	flag.Parse()
+
 	for _, v := range strings.Split(tmp, ",") {
 		admins = append(admins, v)
 	}
-	// fmt.Printf("%+v\n", admins)
 	if len(os.Args) < 2 {
 		flag.Usage()
 	}
 }
 
 func main() {
+	session := sh.NewSession()
+
 	b, err := tb.NewBot(tb.Settings{
 		Token:  token,
 		Poller: &tb.LongPoller{Timeout: time.Duration(pollTime) * time.Millisecond},
@@ -106,7 +108,29 @@ func main() {
 			args = append(stringArray[2:])
 		}
 
-		resp, err := sh.Command(cmd, args).Output()
+		if cmd == "cd" {
+			if args[0] == "~" {
+				args[0] = os.Getenv("HOME")
+			} else if len(args) == 0 {
+				args = append(args, os.Getenv("HOME"))
+			} else if len(args) >= 2 {
+				_, err := b.Send(m.Chat, "Less than or equal one argument is allowed for cd.")
+
+				if err != nil {
+					log.Fatal(err)
+				}
+				return
+			}
+			session.SetDir(args[0])
+			_, err := b.Send(m.Chat, "Current directory is set to "+args[0])
+
+			if err != nil {
+				log.Fatal(err)
+			}
+			return
+		}
+
+		resp, err := session.Command(cmd, args).Output()
 		if err != nil {
 			log.Println(string(resp))
 			_, err := b.Send(m.Chat, ""+err.Error())
